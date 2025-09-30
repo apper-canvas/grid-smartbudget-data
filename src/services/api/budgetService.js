@@ -132,8 +132,8 @@ const budgetService = {
       const params = {
         records: [
           {
-            Name: `${budgetData.category} - ${budgetData.month}`,
-category_c: parseInt(budgetData.category),
+Name: `${typeof budgetData.category === 'object' ? budgetData.category.Id : budgetData.category} - ${budgetData.month}`,
+            category_c: typeof budgetData.category === 'object' ? parseInt(budgetData.category.Id) : parseInt(budgetData.category),
             limit_c: parseFloat(budgetData.limit),
             month_c: budgetData.month,
             spent_c: 0
