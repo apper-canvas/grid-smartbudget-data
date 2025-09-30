@@ -135,7 +135,7 @@ const BudgetModal = ({ isOpen, onClose, onSuccess, budget = null }) => {
             
             <form onSubmit={handleSubmit} className="space-y-4">
               <SelectField
-                label="Category"
+label="Category"
                 name="category"
                 value={formData.category}
                 onChange={handleChange}
@@ -145,7 +145,7 @@ const BudgetModal = ({ isOpen, onClose, onSuccess, budget = null }) => {
               >
                 <option value="">Select a category</option>
                 {categories.map(cat => (
-                  <option key={cat.Id} value={cat.name}>
+                  <option key={cat.Id} value={cat.Id}>
                     {cat.name}
                   </option>
                 ))}
