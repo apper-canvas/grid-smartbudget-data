@@ -22,9 +22,9 @@ const BudgetModal = ({ isOpen, onClose, onSuccess, budget = null }) => {
   useEffect(() => {
     if (isOpen) {
       loadCategories();
-      if (budget) {
+if (budget) {
         setFormData({
-          category: budget.category,
+          category: budget.category_c || budget.category,
           limit: budget.limit.toString(),
           month: budget.month
         });

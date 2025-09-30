@@ -179,9 +179,9 @@ category_c: parseInt(budgetData.category),
       });
 
       const updateData = {
-        Id: parseInt(id),
+Id: parseInt(id),
         Name: `${budgetData.category} - ${budgetData.month}`,
-        category_c: budgetData.category,
+        category_c: typeof budgetData.category === 'object' ? parseInt(budgetData.category.Id) : parseInt(budgetData.category),
         limit_c: parseFloat(budgetData.limit),
         month_c: budgetData.month
       };
