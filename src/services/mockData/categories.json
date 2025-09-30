@@ -4,76 +4,87 @@
     "name": "Food & Dining",
     "type": "expense",
     "color": "#ef4444",
-    "icon": "UtensilsCrossed"
+    "icon": "UtensilsCrossed",
+    "isCustom": false
   },
   {
     "Id": 2,
     "name": "Transport",
     "type": "expense",
     "color": "#f59e0b",
-    "icon": "Car"
+    "icon": "Car",
+    "isCustom": false
   },
   {
     "Id": 3,
     "name": "Bills & Utilities",
     "type": "expense",
     "color": "#8b5cf6",
-    "icon": "FileText"
+    "icon": "FileText",
+    "isCustom": false
   },
   {
     "Id": 4,
     "name": "Shopping",
     "type": "expense",
     "color": "#ec4899",
-    "icon": "ShoppingBag"
+    "icon": "ShoppingBag",
+    "isCustom": false
   },
   {
     "Id": 5,
     "name": "Entertainment",
     "type": "expense",
     "color": "#06b6d4",
-    "icon": "Tv"
+    "icon": "Tv",
+    "isCustom": false
   },
   {
     "Id": 6,
     "name": "Health & Fitness",
     "type": "expense",
     "color": "#10b981",
-    "icon": "Heart"
+    "icon": "Heart",
+    "isCustom": false
   },
   {
     "Id": 7,
     "name": "Other Expenses",
     "type": "expense",
     "color": "#64748b",
-    "icon": "MoreHorizontal"
+    "icon": "MoreHorizontal",
+    "isCustom": false
   },
   {
     "Id": 8,
     "name": "Salary",
     "type": "income",
     "color": "#10b981",
-    "icon": "Briefcase"
+    "icon": "Briefcase",
+    "isCustom": false
   },
   {
     "Id": 9,
     "name": "Freelance",
     "type": "income",
     "color": "#3b82f6",
-    "icon": "Laptop"
+    "icon": "Laptop",
+    "isCustom": false
   },
   {
     "Id": 10,
     "name": "Investment",
     "type": "income",
     "color": "#8b5cf6",
-    "icon": "TrendingUp"
+    "icon": "TrendingUp",
+    "isCustom": false
   },
   {
     "Id": 11,
     "name": "Other Income",
     "type": "income",
     "color": "#64748b",
-    "icon": "Plus"
+    "icon": "Plus",
+    "isCustom": false
   }
 ]
