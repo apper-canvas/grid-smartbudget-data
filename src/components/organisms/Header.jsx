@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import { NavLink } from "react-router-dom";
-import ApperIcon from "@/components/ApperIcon";
+import { AuthContext } from "@/App";
 import { cn } from "@/utils/cn";
+import ApperIcon from "@/components/ApperIcon";
 
 const Header = () => {
-const navItems = [
+  const { logout } = useContext(AuthContext);
+  
+  const navItems = [
     { path: "/", label: "Dashboard", icon: "LayoutDashboard" },
     { path: "/transactions", label: "Transactions", icon: "ArrowLeftRight" },
     { path: "/budget", label: "Budget", icon: "PiggyBank" },
@@ -50,9 +53,8 @@ const navItems = [
             <button className="p-2 text-slate-600 hover:bg-slate-100 rounded-lg transition-colors duration-200">
               <ApperIcon name="Settings" size={20} />
             </button>
-            <button
+<button
               onClick={() => {
-                const { logout } = require("react").useContext(require("@/App").AuthContext);
                 logout();
               }}
               className="px-4 py-2 text-sm font-medium text-white bg-primary hover:bg-blue-700 rounded-lg transition-colors duration-200"
