@@ -35,8 +35,7 @@ const Budget = () => {
         transactionService.getAll(),
         categoryService.getAll()
       ]);
-      
-      const updatedBudgets = budgetData.map(budget => {
+const updatedBudgets = budgetData.map(budget => {
         const spent = transData
           .filter(t => 
             t.type === "expense" && 
@@ -50,11 +49,44 @@ const Budget = () => {
       
       setBudgets(updatedBudgets);
       setCategories(catData);
+      
+      // Check budget thresholds and trigger notifications
+      checkBudgetNotifications(updatedBudgets);
     } catch (err) {
       setError(err.message || "Failed to load budgets");
     } finally {
       setLoading(false);
     }
+  }
+
+  function checkBudgetNotifications(budgetList) {
+    budgetList.forEach(budget => {
+      const percentage = (budget.spent / budget.limit) * 100;
+      
+      if (percentage >= 100) {
+        toast.error(
+          <div className="flex items-center gap-2">
+            <ApperIcon name="AlertTriangle" size={20} />
+            <div>
+              <div className="font-semibold">Budget Exceeded!</div>
+              <div className="text-sm">{budget.category}: ${budget.spent.toFixed(2)} / ${budget.limit.toFixed(2)}</div>
+            </div>
+          </div>,
+          { autoClose: 5000 }
+        );
+      } else if (percentage >= 80) {
+        toast.warning(
+          <div className="flex items-center gap-2">
+            <ApperIcon name="Bell" size={20} />
+            <div>
+              <div className="font-semibold">Budget Alert</div>
+              <div className="text-sm">{budget.category}: ${budget.spent.toFixed(2)} / ${budget.limit.toFixed(2)}</div>
+            </div>
+          </div>,
+          { autoClose: 4000 }
+        );
+      }
+    });
   };
   
   const handleEdit = (budget) => {
