@@ -83,11 +83,15 @@ const TransactionModal = ({ isOpen, onClose, onSuccess, transaction = null }) =>
     
     setLoading(true);
     
-    try {
+try {
+      // Find the category ID from the selected category name
+      const selectedCategory = categories.find(cat => cat.name === formData.category);
+      
       const transactionData = {
         amount: parseFloat(formData.amount),
         type: formData.type,
         category: formData.category,
+        categoryId: selectedCategory?.Id, // Add category ID for lookup field
         date: new Date(formData.date).toISOString(),
         description: formData.description
       };

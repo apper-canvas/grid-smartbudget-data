@@ -93,13 +93,13 @@ const transactionService = {
         apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
       });
 
-      const params = {
+const params = {
         records: [
           {
             Name: `${transactionData.type} - ${transactionData.category}`,
             amount_c: parseFloat(transactionData.amount),
             type_c: transactionData.type,
-            category_c: transactionData.category,
+            category_c: parseInt(transactionData.categoryId), // Use integer ID for lookup field
             date_c: transactionData.date,
             description_c: transactionData.description || "",
             created_at_c: new Date().toISOString()
@@ -146,14 +146,14 @@ const transactionService = {
         apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
       });
 
-      const params = {
+const params = {
         records: [
           {
             Id: parseInt(id),
             Name: `${transactionData.type} - ${transactionData.category}`,
             amount_c: parseFloat(transactionData.amount),
             type_c: transactionData.type,
-            category_c: transactionData.category,
+            category_c: parseInt(transactionData.categoryId), // Use integer ID for lookup field
             date_c: transactionData.date,
             description_c: transactionData.description || ""
           }
