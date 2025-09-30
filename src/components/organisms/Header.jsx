@@ -43,12 +43,21 @@ const navItems = [
             ))}
           </nav>
           
-          <div className="flex items-center gap-2">
+<div className="flex items-center gap-2">
             <button className="p-2 text-slate-600 hover:bg-slate-100 rounded-lg transition-colors duration-200">
               <ApperIcon name="Bell" size={20} />
             </button>
             <button className="p-2 text-slate-600 hover:bg-slate-100 rounded-lg transition-colors duration-200">
               <ApperIcon name="Settings" size={20} />
+            </button>
+            <button
+              onClick={() => {
+                const { logout } = require("react").useContext(require("@/App").AuthContext);
+                logout();
+              }}
+              className="px-4 py-2 text-sm font-medium text-white bg-primary hover:bg-blue-700 rounded-lg transition-colors duration-200"
+            >
+              Logout
             </button>
           </div>
         </div>

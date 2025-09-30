@@ -1,69 +1,315 @@
-import budgetsData from "../mockData/budgets.json";
-
-let budgets = [...budgetsData];
-
-const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-
 const budgetService = {
   getAll: async () => {
-    await delay(400);
-    return [...budgets];
+    try {
+      const { ApperClient } = window.ApperSDK;
+      const apperClient = new ApperClient({
+        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+      });
+
+      const params = {
+        fields: [
+          { field: { Name: "Id" } },
+          { field: { Name: "Name" } },
+          { field: { Name: "category_c" }, referenceField: { field: { Name: "Name" } } },
+          { field: { Name: "limit_c" } },
+          { field: { Name: "month_c" } },
+          { field: { Name: "spent_c" } }
+        ]
+      };
+
+      const response = await apperClient.fetchRecords("budget_c", params);
+
+      if (!response?.data?.length) {
+        return [];
+      }
+
+      return response.data.map((b) => ({
+        Id: b.Id,
+        category: b.category_c?.Name || "",
+        limit: b.limit_c || 0,
+        month: b.month_c || "",
+        spent: b.spent_c || 0
+      }));
+    } catch (error) {
+      console.error("Error fetching budgets:", error?.response?.data?.message || error);
+      return [];
+    }
   },
 
   getById: async (id) => {
-    await delay(200);
-    const budget = budgets.find(b => b.Id === parseInt(id));
-    if (!budget) {
-      throw new Error("Budget not found");
+    try {
+      const { ApperClient } = window.ApperSDK;
+      const apperClient = new ApperClient({
+        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+      });
+
+      const params = {
+        fields: [
+          { field: { Name: "Id" } },
+          { field: { Name: "Name" } },
+          { field: { Name: "category_c" }, referenceField: { field: { Name: "Name" } } },
+          { field: { Name: "limit_c" } },
+          { field: { Name: "month_c" } },
+          { field: { Name: "spent_c" } }
+        ]
+      };
+
+      const response = await apperClient.getRecordById("budget_c", id, params);
+
+      if (!response?.data) {
+        return null;
+      }
+
+      const b = response.data;
+      return {
+        Id: b.Id,
+        category: b.category_c?.Name || "",
+        limit: b.limit_c || 0,
+        month: b.month_c || "",
+        spent: b.spent_c || 0
+      };
+    } catch (error) {
+      console.error(`Error fetching budget ${id}:`, error?.response?.data?.message || error);
+      return null;
     }
-    return { ...budget };
   },
 
   getByMonth: async (month) => {
-    await delay(400);
-    return budgets.filter(b => b.month === month).map(b => ({ ...b }));
+    try {
+      const { ApperClient } = window.ApperSDK;
+      const apperClient = new ApperClient({
+        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+      });
+
+      const params = {
+        fields: [
+          { field: { Name: "Id" } },
+          { field: { Name: "Name" } },
+          { field: { Name: "category_c" }, referenceField: { field: { Name: "Name" } } },
+          { field: { Name: "limit_c" } },
+          { field: { Name: "month_c" } },
+          { field: { Name: "spent_c" } }
+        ],
+        where: [
+          {
+            FieldName: "month_c",
+            Operator: "ExactMatch",
+            Values: [month]
+          }
+        ]
+      };
+
+      const response = await apperClient.fetchRecords("budget_c", params);
+
+      if (!response?.data?.length) {
+        return [];
+      }
+
+      return response.data.map((b) => ({
+        Id: b.Id,
+        category: b.category_c?.Name || "",
+        limit: b.limit_c || 0,
+        month: b.month_c || "",
+        spent: b.spent_c || 0
+      }));
+    } catch (error) {
+      console.error("Error fetching budgets by month:", error?.response?.data?.message || error);
+      return [];
+    }
   },
 
   create: async (budgetData) => {
-    await delay(300);
-    const maxId = Math.max(...budgets.map(b => b.Id), 0);
-    const newBudget = {
-      Id: maxId + 1,
-      ...budgetData,
-      spent: 0
-    };
-    budgets = [...budgets, newBudget];
-    return { ...newBudget };
+    try {
+      const { ApperClient } = window.ApperSDK;
+      const apperClient = new ApperClient({
+        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+      });
+
+      const params = {
+        records: [
+          {
+            Name: `${budgetData.category} - ${budgetData.month}`,
+            category_c: budgetData.category,
+            limit_c: parseFloat(budgetData.limit),
+            month_c: budgetData.month,
+            spent_c: 0
+          }
+        ]
+      };
+
+      const response = await apperClient.createRecord("budget_c", params);
+
+      if (!response.success) {
+        console.error(response.message);
+        throw new Error(response.message);
+      }
+
+      if (response.results) {
+        const failed = response.results.filter((r) => !r.success);
+        if (failed.length > 0) {
+          console.error(`Failed to create budget:`, failed);
+          throw new Error(failed[0].message || "Failed to create budget");
+        }
+
+        const created = response.results[0];
+        return {
+          Id: created.data.Id,
+          category: created.data.category_c?.Name || budgetData.category,
+          limit: created.data.limit_c || 0,
+          month: created.data.month_c || budgetData.month,
+          spent: created.data.spent_c || 0
+        };
+      }
+    } catch (error) {
+      console.error("Error creating budget:", error?.response?.data?.message || error);
+      throw error;
+    }
   },
 
   update: async (id, budgetData) => {
-    await delay(300);
-    const index = budgets.findIndex(b => b.Id === parseInt(id));
-    if (index === -1) {
-      throw new Error("Budget not found");
+    try {
+      const { ApperClient } = window.ApperSDK;
+      const apperClient = new ApperClient({
+        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+      });
+
+      const updateData = {
+        Id: parseInt(id),
+        Name: `${budgetData.category} - ${budgetData.month}`,
+        category_c: budgetData.category,
+        limit_c: parseFloat(budgetData.limit),
+        month_c: budgetData.month
+      };
+
+      if (budgetData.spent !== undefined) {
+        updateData.spent_c = parseFloat(budgetData.spent);
+      }
+
+      const params = {
+        records: [updateData]
+      };
+
+      const response = await apperClient.updateRecord("budget_c", params);
+
+      if (!response.success) {
+        console.error(response.message);
+        throw new Error(response.message);
+      }
+
+      if (response.results) {
+        const failed = response.results.filter((r) => !r.success);
+        if (failed.length > 0) {
+          console.error(`Failed to update budget:`, failed);
+          throw new Error(failed[0].message || "Failed to update budget");
+        }
+
+        const updated = response.results[0];
+        return {
+          Id: updated.data.Id,
+          category: updated.data.category_c?.Name || budgetData.category,
+          limit: updated.data.limit_c || 0,
+          month: updated.data.month_c || budgetData.month,
+          spent: updated.data.spent_c || 0
+        };
+      }
+    } catch (error) {
+      console.error("Error updating budget:", error?.response?.data?.message || error);
+      throw error;
     }
-    budgets[index] = { ...budgets[index], ...budgetData };
-    return { ...budgets[index] };
   },
 
   delete: async (id) => {
-    await delay(300);
-    const index = budgets.findIndex(b => b.Id === parseInt(id));
-    if (index === -1) {
-      throw new Error("Budget not found");
+    try {
+      const { ApperClient } = window.ApperSDK;
+      const apperClient = new ApperClient({
+        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+      });
+
+      const params = {
+        RecordIds: [parseInt(id)]
+      };
+
+      const response = await apperClient.deleteRecord("budget_c", params);
+
+      if (!response.success) {
+        console.error(response.message);
+        throw new Error(response.message);
+      }
+
+      if (response.results) {
+        const failed = response.results.filter((r) => !r.success);
+        if (failed.length > 0) {
+          console.error(`Failed to delete budget:`, failed);
+          throw new Error(failed[0].message || "Failed to delete budget");
+        }
+      }
+
+      return true;
+    } catch (error) {
+      console.error("Error deleting budget:", error?.response?.data?.message || error);
+      throw error;
     }
-    budgets = budgets.filter(b => b.Id !== parseInt(id));
-    return true;
   },
 
   updateSpent: async (category, month, amount) => {
-    await delay(200);
-    const budget = budgets.find(b => b.category === category && b.month === month);
-    if (budget) {
-      budget.spent = amount;
-      return { ...budget };
+    try {
+      const budgets = await budgetService.getByMonth(month);
+      const budget = budgets.find((b) => b.category === category);
+
+      if (!budget) {
+        return null;
+      }
+
+      const { ApperClient } = window.ApperSDK;
+      const apperClient = new ApperClient({
+        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+      });
+
+      const params = {
+        records: [
+          {
+            Id: budget.Id,
+            spent_c: parseFloat(amount)
+          }
+        ]
+      };
+
+      const response = await apperClient.updateRecord("budget_c", params);
+
+      if (!response.success) {
+        console.error(response.message);
+        return null;
+      }
+
+      if (response.results) {
+        const failed = response.results.filter((r) => !r.success);
+        if (failed.length > 0) {
+          console.error(`Failed to update spent amount:`, failed);
+          return null;
+        }
+
+        const updated = response.results[0];
+        return {
+          Id: updated.data.Id,
+          category: updated.data.category_c?.Name || category,
+          limit: updated.data.limit_c || 0,
+          month: updated.data.month_c || month,
+          spent: updated.data.spent_c || 0
+        };
+      }
+
+      return null;
+    } catch (error) {
+      console.error("Error updating spent amount:", error?.response?.data?.message || error);
+      return null;
     }
-    return null;
   }
 };
 
