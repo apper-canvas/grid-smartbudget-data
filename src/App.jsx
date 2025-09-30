@@ -14,8 +14,8 @@ import Budget from "@/components/pages/Budget";
 import Categories from "@/components/pages/Categories";
 import Transactions from "@/components/pages/Transactions";
 import Goals from "@/components/pages/Goals";
+import BankAccounts from "@/components/pages/BankAccounts";
 import Header from "@/components/organisms/Header";
-
 export const AuthContext = createContext(null);
 
 function AppContent() {
@@ -148,9 +148,10 @@ function AppContent() {
             <Route path="/error" element={<ErrorPage />} />
             <Route path="/prompt-password/:appId/:emailAddress/:provider" element={<PromptPassword />} />
             <Route path="/reset-password/:appId/:fields" element={<ResetPassword />} />
-            <Route path="/" element={<Dashboard />} />
+<Route path="/" element={<Dashboard />} />
             <Route path="/transactions" element={<Transactions />} />
             <Route path="/budget" element={<Budget />} />
+            <Route path="/bank-accounts" element={<BankAccounts />} />
             <Route path="/goals" element={<Goals />} />
             <Route path="/categories" element={<Categories />} />
           </Routes>
