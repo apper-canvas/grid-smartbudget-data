@@ -10,7 +10,8 @@ import categoryService from "@/services/api/categoryService";
 import { format } from "date-fns";
 
 const BudgetModal = ({ isOpen, onClose, onSuccess, budget = null }) => {
-  const [formData, setFormData] = useState({
+const [formData, setFormData] = useState({
+    title: "",
     category: "",
     limit: "",
     month: format(new Date(), "yyyy-MM")
@@ -24,12 +25,14 @@ const BudgetModal = ({ isOpen, onClose, onSuccess, budget = null }) => {
       loadCategories();
 if (budget) {
         setFormData({
+          title: budget.title || budget.Name || "",
           category: budget.category_c || budget.category,
           limit: budget.limit.toString(),
           month: budget.month
         });
       } else {
         setFormData({
+title: "",
           category: "",
           limit: "",
           month: format(new Date(), "yyyy-MM")
@@ -48,8 +51,12 @@ if (budget) {
     }
   };
   
-  const validateForm = () => {
+const validateForm = () => {
     const newErrors = {};
+    
+    if (!formData.title.trim()) {
+      newErrors.title = "Title is required";
+    }
     
     if (!formData.category) {
       newErrors.category = "Please select a category";
@@ -77,7 +84,8 @@ if (budget) {
     setLoading(true);
     
     try {
-      const budgetData = {
+const budgetData = {
+        title: formData.title,
         category: formData.category,
         limit: parseFloat(formData.limit),
         month: formData.month
@@ -133,7 +141,16 @@ if (budget) {
               </button>
             </div>
             
-            <form onSubmit={handleSubmit} className="space-y-4">
+<form onSubmit={handleSubmit} className="space-y-4">
+              <FormField
+                label="Title"
+                name="title"
+                value={formData.title}
+                onChange={handleChange}
+                error={errors.title}
+                placeholder="Enter budget title"
+                required
+              />
               <SelectField
 label="Category"
                 name="category"

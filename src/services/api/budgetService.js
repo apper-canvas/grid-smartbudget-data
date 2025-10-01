@@ -11,6 +11,7 @@ const budgetService = {
         fields: [
           { field: { Name: "Id" } },
           { field: { Name: "Name" } },
+{ field: { Name: "Name" } },
           { field: { Name: "category_c" }, referenceField: { field: { Name: "Name" } } },
           { field: { Name: "limit_c" } },
           { field: { Name: "month_c" } },
@@ -25,7 +26,9 @@ const budgetService = {
       }
 
       return response.data.map((b) => ({
-        Id: b.Id,
+Id: b.Id,
+        title: b.Name || "",
+        Name: b.Name || "",
         category: b.category_c?.Name || "",
         limit: b.limit_c || 0,
         month: b.month_c || "",
@@ -46,7 +49,7 @@ const budgetService = {
       });
 
       const params = {
-        fields: [
+fields: [
           { field: { Name: "Id" } },
           { field: { Name: "Name" } },
           { field: { Name: "category_c" }, referenceField: { field: { Name: "Name" } } },
@@ -62,8 +65,11 @@ const budgetService = {
         return null;
       }
 
-      const b = response.data;
+const b = response.data;
       return {
+        Id: b.Id,
+        title: b.Name || "",
+        Name: b.Name || "",
         Id: b.Id,
         category: b.category_c?.Name || "",
         limit: b.limit_c || 0,
@@ -86,7 +92,7 @@ const budgetService = {
 
       const params = {
         fields: [
-          { field: { Name: "Id" } },
+{ field: { Name: "Id" } },
           { field: { Name: "Name" } },
           { field: { Name: "category_c" }, referenceField: { field: { Name: "Name" } } },
           { field: { Name: "limit_c" } },
@@ -110,6 +116,8 @@ const budgetService = {
 
       return response.data.map((b) => ({
         Id: b.Id,
+title: b.Name || "",
+        Name: b.Name || "",
         category: b.category_c?.Name || "",
         limit: b.limit_c || 0,
         month: b.month_c || "",
@@ -132,7 +140,7 @@ const budgetService = {
       const params = {
         records: [
           {
-Name: `${typeof budgetData.category === 'object' ? budgetData.category.Id : budgetData.category} - ${budgetData.month}`,
+Name: budgetData.title,
             category_c: typeof budgetData.category === 'object' ? parseInt(budgetData.category.Id) : parseInt(budgetData.category),
             limit_c: parseFloat(budgetData.limit),
             month_c: budgetData.month,
@@ -157,7 +165,9 @@ Name: `${typeof budgetData.category === 'object' ? budgetData.category.Id : budg
 
         const created = response.results[0];
         return {
-          Id: created.data.Id,
+Id: created.data.Id,
+          title: created.data.Name || budgetData.title,
+          Name: created.data.Name || budgetData.title,
           category: created.data.category_c?.Name || budgetData.category,
           limit: created.data.limit_c || 0,
           month: created.data.month_c || budgetData.month,
@@ -180,7 +190,7 @@ Name: `${typeof budgetData.category === 'object' ? budgetData.category.Id : budg
 
       const updateData = {
 Id: parseInt(id),
-        Name: `${budgetData.category} - ${budgetData.month}`,
+Name: budgetData.title,
         category_c: typeof budgetData.category === 'object' ? parseInt(budgetData.category.Id) : parseInt(budgetData.category),
         limit_c: parseFloat(budgetData.limit),
         month_c: budgetData.month
@@ -210,7 +220,9 @@ Id: parseInt(id),
 
         const updated = response.results[0];
         return {
-          Id: updated.data.Id,
+Id: updated.data.Id,
+          title: updated.data.Name || budgetData.title,
+          Name: updated.data.Name || budgetData.title,
           category: updated.data.category_c?.Name || budgetData.category,
           limit: updated.data.limit_c || 0,
           month: updated.data.month_c || budgetData.month,
@@ -297,7 +309,9 @@ Id: parseInt(id),
 
         const updated = response.results[0];
         return {
-          Id: updated.data.Id,
+Id: updated.data.Id,
+          title: updated.data.Name || "",
+          Name: updated.data.Name || "",
           category: updated.data.category_c?.Name || category,
           limit: updated.data.limit_c || 0,
           month: updated.data.month_c || month,

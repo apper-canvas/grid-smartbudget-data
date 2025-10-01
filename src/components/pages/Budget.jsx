@@ -248,7 +248,7 @@ const updatedBudgets = budgetData.map(budget => {
                       />
                     </div>
                     <div>
-                      <h3 className="text-lg font-bold text-secondary">{budget.category}</h3>
+<h3 className="text-lg font-bold text-secondary">{budget.title || budget.Name || budget.category}</h3>
                       <p className={`text-sm font-medium ${status.color}`}>{status.text}</p>
                     </div>
                   </div>
