@@ -6,13 +6,14 @@ import ApperIcon from "@/components/ApperIcon";
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const navItems = [
+const navItems = [
     { path: "/", label: "Dashboard", icon: "LayoutDashboard" },
     { path: "/transactions", label: "Transactions", icon: "ArrowLeftRight" },
     { path: "/budget", label: "Budget", icon: "PiggyBank" },
     { path: "/bank-accounts", label: "Bank Accounts", icon: "Wallet" },
     { path: "/goals", label: "Goals", icon: "Target" },
-    { path: "/categories", label: "Categories", icon: "Layers" }
+    { path: "/categories", label: "Categories", icon: "Layers" },
+    { path: "/reports", label: "Reports", icon: "FileText" }
   ];
 
   return (

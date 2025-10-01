@@ -15,6 +15,7 @@ import Categories from "@/components/pages/Categories";
 import Transactions from "@/components/pages/Transactions";
 import Goals from "@/components/pages/Goals";
 import BankAccounts from "@/components/pages/BankAccounts";
+import Reports from "@/components/pages/Reports";
 import Header from "@/components/organisms/Header";
 import Sidebar from "@/components/organisms/Sidebar";
 export const AuthContext = createContext(null);
@@ -156,7 +157,8 @@ return (
               <Route path="/budget" element={<Budget />} />
               <Route path="/bank-accounts" element={<BankAccounts />} />
               <Route path="/goals" element={<Goals />} />
-              <Route path="/categories" element={<Categories />} />
+<Route path="/categories" element={<Categories />} />
+              <Route path="/reports" element={<Reports />} />
             </Routes>
           </div>
         </main>
