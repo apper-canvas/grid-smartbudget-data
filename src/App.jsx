@@ -16,6 +16,7 @@ import Transactions from "@/components/pages/Transactions";
 import Goals from "@/components/pages/Goals";
 import BankAccounts from "@/components/pages/BankAccounts";
 import Header from "@/components/organisms/Header";
+import Sidebar from "@/components/organisms/Sidebar";
 export const AuthContext = createContext(null);
 
 function AppContent() {
@@ -136,25 +137,28 @@ function AppContent() {
     );
   }
 
-  return (
+return (
     <AuthContext.Provider value={authMethods}>
       <div className="min-h-screen bg-background">
         <Header />
-        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/callback" element={<Callback />} />
-            <Route path="/error" element={<ErrorPage />} />
-            <Route path="/prompt-password/:appId/:emailAddress/:provider" element={<PromptPassword />} />
-            <Route path="/reset-password/:appId/:fields" element={<ResetPassword />} />
-<Route path="/" element={<Dashboard />} />
-            <Route path="/transactions" element={<Transactions />} />
-            <Route path="/budget" element={<Budget />} />
-            <Route path="/bank-accounts" element={<BankAccounts />} />
-            <Route path="/goals" element={<Goals />} />
-            <Route path="/categories" element={<Categories />} />
-          </Routes>
+        <Sidebar />
+        <main className="lg:ml-64 pt-16 min-h-screen">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <Routes>
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
+              <Route path="/callback" element={<Callback />} />
+              <Route path="/error" element={<ErrorPage />} />
+              <Route path="/prompt-password/:appId/:emailAddress/:provider" element={<PromptPassword />} />
+              <Route path="/reset-password/:appId/:fields" element={<ResetPassword />} />
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/transactions" element={<Transactions />} />
+              <Route path="/budget" element={<Budget />} />
+              <Route path="/bank-accounts" element={<BankAccounts />} />
+              <Route path="/goals" element={<Goals />} />
+              <Route path="/categories" element={<Categories />} />
+            </Routes>
+          </div>
         </main>
         <ToastContainer
           position="top-right"
